@@ -15,4 +15,11 @@ class AdvertController extends Controller
                         ->render('OCPlatformBundle:Advert:index.html.twig', array('nom' => 'Quentin'));
         return new Response($content);
     }
+    public function viewAction($id){
+        return new Response('truc avec l\'id'.$id);
+    }
+    public function viewSlugAction($slug, $year, $format){
+        return new Response(
+            "On pourrait afficher l'annonce correspondant au slug '".$slug."', créée en ".$year." et au format ".$format.".");
+    }
 }
