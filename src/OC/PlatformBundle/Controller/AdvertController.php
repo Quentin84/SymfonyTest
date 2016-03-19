@@ -11,15 +11,18 @@ class AdvertController extends Controller
 {
     public function indexAction()
     {
-        $content = $this->get('templating')
-                        ->render('OCPlatformBundle:Advert:index.html.twig', array('nom' => 'Quentin'));
-        return new Response($content);
+        $url = $this->generateUrl(
+                'oc_platform_view', // 1 Nom de la route
+                array('id' => 5) // 2 tableau avec les parametres
+                );
+        return new Response('<br>Et l\'url est :'.$url);
     }
     public function viewAction($id){
+        
         return new Response('truc avec l\'id'.$id);
     }
-    public function viewSlugAction($slug, $year, $format){
+    public function viewSlugAction($slug, $year, $_format){
         return new Response(
-            "On pourrait afficher l'annonce correspondant au slug '".$slug."', créée en ".$year." et au format ".$format.".");
+            "On pourrait afficher l'annonce correspondant au slug '".$slug."', créée en ".$year." et au format ".$_format.".");
     }
 }
