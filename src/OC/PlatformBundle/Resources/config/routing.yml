@@ -44,3 +44,9 @@ oc_platform_view_slug:
     requirements:
         year:   \d{4}
         format: html|json
+
+oc_platform_json:
+    path: /jason
+    defaults:
+        _controller: OCPlatformBundle:Advert:getJson
+        
