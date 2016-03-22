@@ -1,0 +1,18 @@
+{# src/OC/PlatformBundle/Resources/view/Advert/view.html.twig #}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Affichage de l'annonce {{ id }}</title>
+  </head>
+  
+    <p>
+      {# On affiche tous les messages flash dont le nom est « info » #}
+      {% for message in app.session.flashbag.get('info') %}
+        <p>Message flash : {{ message }}</p>
+      {% endfor %}
+    </p>
+    
+    <h1>Hello Annonce n°{{ id }} !</h1>
+  
+</html>{# empty Twig template #}
