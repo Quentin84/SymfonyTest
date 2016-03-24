@@ -11,8 +11,10 @@
       {% for message in app.session.flashbag.get('info') %}
         <p>Message flash : {{ message }}</p>
       {% endfor %}
+      {{app.request}}
     </p>
     
     <h1>Hello Annonce n°{{ id }} !</h1>
+    <h2>{{ webmaster }}</h2>
   
 </html>{# empty Twig template #}
