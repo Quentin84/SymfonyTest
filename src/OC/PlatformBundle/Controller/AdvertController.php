@@ -7,6 +7,7 @@ namespace OC\PlatformBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use OC\PlatformBundle\Entity\Advert;
 
 class AdvertController extends Controller
 {
@@ -54,18 +55,25 @@ class AdvertController extends Controller
     // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
 
     // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
-      $text = "non non non";
-      $antispam = $this->container->get('oc_platform.antispam');
-      if($antispam->isSpam($text)){
-          throw new \Exception('Votre message est du spam !');
-      }
+      $advert = new Advert();
+      $advert->setAuthor('Gronaz');
+      $advert->setTitle('Recherche mangeur de mangues');
+      $advert->setContent('aaaaah non mais tu le crois ça? Genre c est un métier ça ?');
+      $advert->setPublished(false);
+
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($advert);
+
+      // Flush des données
+      $em->flush();
+
     if ($request->isMethod('POST')) {
       // Ici, on s'occupera de la création et de la gestion du formulaire
 
       $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
       // Puis on redirige vers la page de visualisation de cettte annonce
-      return $this->redirectToRoute('oc_platform_view', array('id' => 5));
+      return $this->redirect($this->generateUrl('oc_platform_view', array('id' => $advert->getId())));
     }
 
     // Si on n'est pas en POST, alors on affiche le formulaire
