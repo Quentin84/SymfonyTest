@@ -50,7 +50,11 @@ class AdvertController extends Controller
     ));
   }
 
-  public function addAction(Request $request)
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function addAction(Request $request)
   {
     // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
 
