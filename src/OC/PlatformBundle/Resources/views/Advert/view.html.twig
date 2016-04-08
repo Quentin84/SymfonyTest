@@ -11,9 +11,14 @@
   <h2>{{ advert.title }}</h2>
   <i>Par {{ advert.author }}, le {{ advert.date|date('d/m/Y') }}</i>
 
+{% if advert.image is not null %}
+  <div class="col-md-12  thumbnail">
+    <img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}">
+  </div>
   <div class="well">
     {{ advert.content }}
   </div>
+{% endif %}
 
   <p>
     <a href="{{ path('oc_platform_home') }}" class="btn btn-default">

@@ -55,6 +55,11 @@ class Advert
     private $published;
 
     /**
+     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist"})
+     */
+
+    private $image;
+    /**
      * Advert constructor.
      */
     public function __construct()
@@ -190,5 +195,29 @@ class Advert
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \OC\PlatformBundle\Entity\Image $image
+     *
+     * @return Advert
+     */
+    public function setImage(\OC\PlatformBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \OC\PlatformBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }
