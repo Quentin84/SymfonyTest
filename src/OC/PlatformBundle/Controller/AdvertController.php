@@ -4,6 +4,7 @@
 
 namespace OC\PlatformBundle\Controller;
 
+use OC\PlatformBundle\Entity\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -53,9 +54,16 @@ class AdvertController extends Controller
           throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
       }
 
+      // Recuperation des éventuelles candidatures
+      $listapplication = $this->getDoctrine()
+                                ->getManager()
+                                ->getRepository('OCPlatformBundle:Application')
+                                ->findBy(array('advert' => $advert));
+
       // Le render ne change pas, on passait avant un tableau, maintenant un objet
       return $this->render('OCPlatformBundle:Advert:view.html.twig', array(
-          'advert' => $advert
+          'advert' => $advert,
+          'listapplication' => $listapplication
       ));
   }
 
@@ -82,8 +90,23 @@ class AdvertController extends Controller
       // On lie l'image à l'annonce
       $advert->setImage($image);
 
+      // Ajout de candidatures
+
+      $application = new Application();
+      $application->setAuthor('Martin');
+      $application->setContent('Besoin de thunes');
+      $application->setAdvert($advert);
+
+      $application1 = new Application();
+      $application1->setAuthor('Jostophe');
+      $application1->setContent('C\'est le plus fort de l\'univers');
+      $application1->setAdvert($advert);
+
       $em = $this->getDoctrine()->getManager();
       $em->persist($advert);
+
+      $em->persist($application);
+      $em->persist($application1);
 
       // Flush des données
       $em->flush();
