@@ -5,6 +5,7 @@
 namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Application;
+use OC\PlatformBundle\OCPlatformBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -126,13 +127,19 @@ class AdvertController extends Controller
 
   public function editAction($id, Request $request)
   {
-    $advert = array(
-      'title'   => 'Recherche développpeur Symfony2',
-      'id'      => $id,
-      'author'  => 'Alexandre',
-      'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-      'date'    => new \Datetime()
-    );
+    $em = $this->getDoctrine()->getManager();
+      $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+      if (null === $advert) {
+          throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+      }
+
+      $listCategories = $em->getRepository('OCPlatformBundle:Category')->findAll();
+
+      foreach ($listCategories as $category){
+          $advert->addCategory($category);
+      }
+
+      $em->flush();
 
     return $this->render('OCPlatformBundle:Advert:edit.html.twig', array(
       'advert' => $advert
@@ -160,9 +167,16 @@ class AdvertController extends Controller
 
   public function deleteAction($id)
   {
-    // Ici, on récupérera l'annonce correspondant à $id
+    $em = $this->getDoctrine()->getManager();
+      $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+      if(null === $advert){
+          throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+      }
 
-    // Ici, on gérera la suppression de l'annonce en question
+      foreach ($advert->getcategories() as $category ){
+          $advert->removeCategory($category);
+      }
+      $em->flush();
 
     return $this->render('OCPlatformBundle:Advert:delete.html.twig');
   }
