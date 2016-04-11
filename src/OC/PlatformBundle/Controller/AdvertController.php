@@ -4,6 +4,7 @@
 
 namespace OC\PlatformBundle\Controller;
 
+use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\OCPlatformBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -61,10 +62,16 @@ class AdvertController extends Controller
                                 ->getRepository('OCPlatformBundle:Application')
                                 ->findBy(array('advert' => $advert));
 
+      $listSkills = $this->getDoctrine()
+                            ->getManager()
+                            ->getRepository('OCPlatformBundle:AdvertSkill')
+                            ->findBy(array('advert'=>$advert));
+
       // Le render ne change pas, on passait avant un tableau, maintenant un objet
       return $this->render('OCPlatformBundle:Advert:view.html.twig', array(
           'advert' => $advert,
-          'listapplication' => $listapplication
+          'listapplication' => $listapplication,
+          'listAdvertSkills' => $listSkills
       ));
   }
 
@@ -109,6 +116,15 @@ class AdvertController extends Controller
       $em->persist($application);
       $em->persist($application1);
 
+      $listSkills = $em->getRepository("OCPlatformBundle:Skill")->findAll();
+      foreach($listSkills as $skill){
+          $advertSkill = new AdvertSkill();
+          $advertSkill->setSkill($skill);
+          $advertSkill->setAdvert($advert);
+          $advertSkill->setLevel('Expert');
+
+          $em->persist($advertSkill);
+      }
       // Flush des données
       $em->flush();
 
