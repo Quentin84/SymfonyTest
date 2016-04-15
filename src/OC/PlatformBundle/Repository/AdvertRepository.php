@@ -1,6 +1,8 @@
 <?php
 
 namespace OC\PlatformBundle\Repository;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * AdvertRepository
@@ -10,4 +12,50 @@ namespace OC\PlatformBundle\Repository;
  */
 class AdvertRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function myFindAll(){
+        return $this->createQueryBuilder('a')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function myFindOne($id){
+        return $this->createQueryBuilder('a')
+            ->where('a.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByAuthorAndDate($author, $date){
+        return $this->createQueryBuilder('a')
+            ->where('a.author = :author')->setParameter('author', $author)
+            ->andWhere('a.date < :date')->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function whereCurrentYear(QueryBuilder $qb){
+        $qb->andWhere('a.date BETWEEN :start AND :end')
+            ->setParameter('start', new \DateTime(date('Y').'-01-01'))
+            ->setParameter('end', new DateTime(date('Y').'-12-31'));
+
+    }
+
+    public function getAdvertsWithApplications(){
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.applications', 'app')
+            ->addSelect('app')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getAdvertsWithCategories(array $categoryNames){
+         $qb = $this->createQueryBuilder('a');
+         $qb->leftJoin('a.categories', 'cat')
+            ->addSelect('cat');
+         $qb->where($qb->expr()->in('cat.name', $categoryNames));
+
+         return $qb->getQuery()
+                    ->getResult();
+    }
 }

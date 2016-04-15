@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="application")
  * @ORM\Entity(repositoryClass="OC\PlatformBundle\Repository\ApplicationRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Application
 {
@@ -45,7 +46,7 @@ class Application
     /**
      * @var
      *
-     * @ORM\ManyToOne(targetEntity="OC\PlatformBundle\Entity\Advert")
+     * @ORM\ManyToOne(targetEntity="OC\PlatformBundle\Entity\Advert", inversedBy="applications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $advert;
@@ -163,5 +164,19 @@ class Application
     public function getAdvert()
     {
         return $this->advert;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function increaseApp(){
+        $this->getAdvert()->increaseApplications();
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function decreaseApp(){
+        $this->getAdvert()->decreaseApplications();
     }
 }

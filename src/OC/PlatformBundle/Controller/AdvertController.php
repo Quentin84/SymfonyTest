@@ -24,11 +24,13 @@ class AdvertController extends Controller
       // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
       throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
     }
+      $repo = $this->getDoctrine()->getManager()->getRepository('OCPlatformBundle:Advert');
+      $listAdverts = $repo->myFindAll();
 
     // Ici, on récupérera la liste des annonces, puis on la passera au template
 
     // Mais pour l'instant, on ne fait qu'appeler le template
-    return $this->render('OCPlatformBundle:Advert:index.html.twig', ['listAdverts'=> '']);
+    return $this->render('OCPlatformBundle:Advert:index.html.twig', ['listAdverts'=> $listAdverts]);
   }
   public function menuAction() {
       $listAdvert =  array(
@@ -148,7 +150,10 @@ class AdvertController extends Controller
       if (null === $advert) {
           throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
       }
-
+    $advert->setAuthor("Gronazedité");
+      $advert->setTitle("Titre édité");
+      $advert->setContent("Contenu édité");
+      
       $listCategories = $em->getRepository('OCPlatformBundle:Category')->findAll();
 
       foreach ($listCategories as $category){
