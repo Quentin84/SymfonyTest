@@ -2,6 +2,10 @@
 #    path:   /hello-world
 #    defaults: { _controller: OCPlatformBundle:Advert:index }
 # src/OC/PlatformBundle/Resources/config/routing.yml
+oc_platform_test:
+    path: /test
+    defaults:
+        _controller: OCPlatformBundle:Advert:test
 
 oc_platform_home:
     path:      /{page}

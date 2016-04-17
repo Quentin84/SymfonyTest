@@ -3,6 +3,7 @@
 namespace OC\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
@@ -76,6 +77,13 @@ class Advert
      * @ORM\column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     *
+     * @Gedmo\Slug(fields={"title"})
+     * @ORM\Column(length=128, unique=false)
+     */
+    private $slug;
 
     private $nbApplications = 0;
 
@@ -349,5 +357,29 @@ class Advert
 
     public function decreaseApplications(){
         $this->nbApplications--;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Advert
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

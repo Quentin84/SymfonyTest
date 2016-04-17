@@ -8,6 +8,7 @@ use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\OCPlatformBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use OC\PlatformBundle\Entity\Advert;
@@ -142,7 +143,19 @@ class AdvertController extends Controller
     // Si on n'est pas en POST, alors on affiche le formulaire
     return $this->render('OCPlatformBundle:Advert:add.html.twig');
   }
+    public function testAction(){
+        $advert = new Advert();
+        $advert->setTitle('recherche symfony developpeur pas cher');
+        $advert->setAuthor('Grounaz');
+        $advert->setContent('soumission et cravache');
+        $advert->setPublished(0);
 
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($advert);
+        $em->flush();
+
+        return new Response('slug: '.$advert->getSlug());
+    }
   public function editAction($id, Request $request)
   {
     $em = $this->getDoctrine()->getManager();
