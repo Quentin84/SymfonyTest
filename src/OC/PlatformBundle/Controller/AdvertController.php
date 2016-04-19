@@ -6,7 +6,12 @@ namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Application;
-use OC\PlatformBundle\OCPlatformBundle;
+//forms
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,32 +19,35 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Image;
 
+
 class AdvertController extends Controller
 {
   public function indexAction($page)
   {
-    // On ne sait pas combien de pages il y a
-    // Mais on sait qu'une page doit être supérieure ou égale à 1
-    if ($page < 1) {
-      // On déclenche une exception NotFoundHttpException, cela va afficher
-      // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
-      throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
-    }
+      $nbPerPage = 3;
       $repo = $this->getDoctrine()->getManager()->getRepository('OCPlatformBundle:Advert');
-      $listAdverts = $repo->myFindAll();
+      $listAdverts = $repo->getAdverts($page, $nbPerPage);
+      $nbPages = ceil(count($listAdverts)/$nbPerPage);
+      // On ne sait pas combien de pages il y a
+      // Mais on sait qu'une page doit être supérieure ou égale à 1
+      if ($page > $nbPages) {
+          // On déclenche une exception NotFoundHttpException, cela va afficher
+          // une page d'erreur 404 (qu'on pourra personnaliser plus tard d'ailleurs)
+          throw new NotFoundHttpException('Page "'.$page.'" inexistante.');
+      }
 
-    // Ici, on récupérera la liste des annonces, puis on la passera au template
-
-    // Mais pour l'instant, on ne fait qu'appeler le template
-    return $this->render('OCPlatformBundle:Advert:index.html.twig', ['listAdverts'=> $listAdverts]);
+      // Ici, on récupére la liste des annonces, puis on la passera au template
+      //var_dump($listAdverts);
+    return $this->render('OCPlatformBundle:Advert:index.html.twig', ['listAdverts'=> $listAdverts, 'page' => $page, 'nbPages' => $nbPages]);
   }
-  public function menuAction() {
-      $listAdvert =  array(
-                            array('id' => 2, 'title' => 'Recherche cuiseur de bananes'),
-                            array('id' => 3, 'title' => 'CDI mangeur de crevettes'),
-                            array('id' => 4, 'title' => 'Freelance stagiaire')
-                            );
-        return $this->render('OCPlatformBundle:Advert:menu.html.twig', array('listAdverts' => $listAdvert));
+  public function menuAction($limit = 3) {
+
+      $em = $this->getDoctrine()->getManager();
+      $repo = $em->getRepository('OCPlatformBundle:Advert');
+      $listAdvert = $repo->findBy(array(),//pas de criteres
+                              array('date' => 'desc'), //Ordre desc
+                                $limit); //Limite;
+      return $this->render('OCPlatformBundle:Advert:menu.html.twig', array('listAdverts' => $listAdvert));
   }
 
     public function viewAction($id)
@@ -86,13 +94,27 @@ class AdvertController extends Controller
   {
     // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
 
-    // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
+      // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
       $advert = new Advert();
-      $advert->setAuthor('Gronaz');
-      $advert->setTitle('Recherche mangeur de mangues');
-      $advert->setContent('aaaaah non mais tu le crois ça? Genre c est un métier ça ?');
-      $advert->setPublished(false);
+      $formBuilder = $this->createFormBuilder($advert);
+      $formBuilder->add('date', dateType::class)
+          ->add('title', textType::class)
+          ->add('content', textareaType::class)
+          ->add('author', textType::class)
+          // Attention, l'entité doit retourner un boolean par le getPublished !
+          ->add('published', checkboxType::class, array('value' => 1, 'required' => false))
+          ->add('save', submitType::class);
+      $form = $formBuilder->getForm();
 
+      //associe la requete à l'objet advert
+      $form->handleRequest($request);
+      $em = $this->getDoctrine()->getManager();
+      if($form->isValid()) {
+
+          $em->persist($advert);
+          $em->flush();
+
+      }
       // Création de l'entité Image
       $image = new Image();
       $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
@@ -103,36 +125,20 @@ class AdvertController extends Controller
 
       // Ajout de candidatures
 
-      $application = new Application();
-      $application->setAuthor('Martin');
-      $application->setContent('Besoin de thunes');
-      $application->setAdvert($advert);
 
-      $application1 = new Application();
-      $application1->setAuthor('Jostophe');
-      $application1->setContent('C\'est le plus fort de l\'univers');
-      $application1->setAdvert($advert);
+      if ($request->isMethod('POST')) {
 
-      $em = $this->getDoctrine()->getManager();
-      $em->persist($advert);
+          $listSkills = $em->getRepository("OCPlatformBundle:Skill")->findAll();
+          foreach($listSkills as $skill){
+              $advertSkill = new AdvertSkill();
+              $advertSkill->setSkill($skill);
+              $advertSkill->setAdvert($advert);
+              $advertSkill->setLevel('Expert');
 
-      $em->persist($application);
-      $em->persist($application1);
-
-      $listSkills = $em->getRepository("OCPlatformBundle:Skill")->findAll();
-      foreach($listSkills as $skill){
-          $advertSkill = new AdvertSkill();
-          $advertSkill->setSkill($skill);
-          $advertSkill->setAdvert($advert);
-          $advertSkill->setLevel('Expert');
-
-          $em->persist($advertSkill);
-      }
-      // Flush des données
-      $em->flush();
-
-    if ($request->isMethod('POST')) {
-      // Ici, on s'occupera de la création et de la gestion du formulaire
+              $em->persist($advertSkill);
+          }
+          // Flush des données
+          // Ici, on s'occupera de la création et de la gestion du formulaire
 
       $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
@@ -141,42 +147,39 @@ class AdvertController extends Controller
     }
 
     // Si on n'est pas en POST, alors on affiche le formulaire
-    return $this->render('OCPlatformBundle:Advert:add.html.twig');
+    return $this->render('OCPlatformBundle:Advert:add.html.twig', array('form' => $form->createView()));
   }
-    public function testAction(){
-        $advert = new Advert();
-        $advert->setTitle('recherche symfony developpeur pas cher');
-        $advert->setAuthor('Grounaz');
-        $advert->setContent('soumission et cravache');
-        $advert->setPublished(0);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($advert);
-        $em->flush();
-
-        return new Response('slug: '.$advert->getSlug());
-    }
   public function editAction($id, Request $request)
   {
     $em = $this->getDoctrine()->getManager();
       $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+      $formBuilder = $this->createFormBuilder($advert);
+      $formBuilder->add('date', dateType::class)
+          ->add('title', textType::class)
+          ->add('content', textareaType::class)
+          ->add('author', textType::class)
+          // Attention, l'entité doit retourner un boolean par le getPublished !
+          ->add('published', checkboxType::class, array('value' => 1, 'required' => false))
+          ->add('save', submitType::class);
+      $form = $formBuilder->getForm();
+
+      //associe la requete à l'objet advert
+      $form->handleRequest($request);
+      $em = $this->getDoctrine()->getManager();
+      if($form->isValid()) {
+
+
+          $em->flush();
+
+      }
       if (null === $advert) {
           throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
       }
-    $advert->setAuthor("Gronazedité");
-      $advert->setTitle("Titre édité");
-      $advert->setContent("Contenu édité");
-      
-      $listCategories = $em->getRepository('OCPlatformBundle:Category')->findAll();
-
-      foreach ($listCategories as $category){
-          $advert->addCategory($category);
-      }
-
-      $em->flush();
 
     return $this->render('OCPlatformBundle:Advert:edit.html.twig', array(
-      'advert' => $advert
+      'advert' => $advert,
+        'form' => $form->createView()
     ));
   }
   public function editImageAction($advertId)
@@ -199,7 +202,7 @@ class AdvertController extends Controller
         return new Response('OK');
     }
 
-  public function deleteAction($id)
+  public function deleteAction($id, Request $request)
   {
     $em = $this->getDoctrine()->getManager();
       $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
@@ -211,7 +214,9 @@ class AdvertController extends Controller
           $advert->removeCategory($category);
       }
       $em->flush();
-
-    return $this->render('OCPlatformBundle:Advert:delete.html.twig');
+      if($request->isMethod('POST')){
+          $request->getSession()->getFlashBag()->add('info', 'annonce correctement supprimée');
+          return $this->render('OCPlatformBundle:Advert:delete.html.twig', array('advert' => $advert));
+      }
   }
 }

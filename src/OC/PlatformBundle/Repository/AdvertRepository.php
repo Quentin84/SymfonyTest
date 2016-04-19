@@ -3,6 +3,7 @@
 namespace OC\PlatformBundle\Repository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * AdvertRepository
@@ -12,6 +13,23 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class AdvertRepository extends \Doctrine\ORM\EntityRepository
 {
+    //Recupèere toutes les annonces
+    public function getAdverts($page, $nbPerPage){
+        $query = $this->createQueryBuilder('a')
+            //jointure table images
+            ->leftJoin('a.image', 'i')
+            ->addSelect('i')
+            //Jointure catégories
+            ->leftJoin('a.categories', 'c')
+            ->addSelect('c')
+            ->orderBy('a.date','DESC')
+            ->getQuery();
+        //return $query->getResult();
+
+        $query->setFirstResult(($page-1) * $nbPerPage)
+            ->setMaxResults($nbPerPage);
+        return new Paginator($query, true);
+    }
     public function myFindAll(){
         return $this->createQueryBuilder('a')
             ->getQuery()

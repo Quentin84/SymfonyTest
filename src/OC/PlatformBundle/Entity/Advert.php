@@ -2,9 +2,11 @@
 
 namespace OC\PlatformBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Doctrine\Common\Collections\ArrayCollections;
 
 /**
  * Advert
@@ -55,7 +57,7 @@ class Advert
     /**
      * @ORM\Column(name="published", type="boolean")
      */
-    private $published;
+    private $published = true;
 
     /**
      * @ORM\ManyToMany(targetEntity="OC\PlatformBundle\Entity\Category", cascade={"persist"})
@@ -94,6 +96,8 @@ class Advert
     public function __construct()
     {
         $this->date = new \Datetime();
+        $this->categories = new ArrayCollection();
+        $this->applications = new ArrayCollection();
     }
 
     /**
@@ -223,7 +227,7 @@ class Advert
      */
     public function getPublished()
     {
-        return $this->published;
+        return (boolean)$this->published;
     }
 
     /**
