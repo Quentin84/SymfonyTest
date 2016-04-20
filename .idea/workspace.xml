@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="30d81bf0-ba9a-449f-8e55-e882e00f8ee9" name="Default" comment="">
+<<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+=======
+>>>>>>> fb0ab68d088694d5191d7ac756c0da6dec123b34
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig" afterPath="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig" />
     </list>
     <ignored path="Symfony.iws" />
@@ -55,8 +58,13 @@
       <file leaf-file-name="form.html.twig" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="374">
               <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+=======
+            <state relative-caret-position="255">
+              <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+>>>>>>> fb0ab68d088694d5191d7ac756c0da6dec123b34
               <folding />
             </state>
           </provider>
@@ -510,12 +518,20 @@
       <workItem from="1460636693024" duration="2336000" />
       <workItem from="1460723531878" duration="596000" />
       <workItem from="1460734063458" duration="3967000" />
+<<<<<<< HEAD
       <workItem from="1460904017735" duration="26252000" />
+=======
+      <workItem from="1460904017735" duration="25440000" />
+>>>>>>> fb0ab68d088694d5191d7ac756c0da6dec123b34
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="76200000" />
+=======
+    <option name="totallyTimeSpent" value="75388000" />
+>>>>>>> fb0ab68d088694d5191d7ac756c0da6dec123b34
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -989,8 +1005,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="374">
           <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+=======
+        <state relative-caret-position="255">
+          <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+>>>>>>> fb0ab68d088694d5191d7ac756c0da6dec123b34
           <folding />
         </state>
       </provider>

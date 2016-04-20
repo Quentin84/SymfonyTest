@@ -17,13 +17,14 @@
     <div class="col-sm-4">
       {{ form_widget(form.title, {'attr' : {'class': 'form-control'}}) }}
     </div>
+
   </div>
   <div class="form-group">
     {{ form_label(form.content, "Texte de l'annonce", {'label_attr' : {'class' : 'col-sm-3 control-label'}}) }}
     {{ form_errors(form.content) }}
     <div class="col-sm-4">
       {{ form_widget(form.content, {'attr' : {'class': 'form-control'}}) }}
-    </div>  
+    </div>
   </div>
   {# Génération du label + error + widget pour un champ #}
   {{ form_row(form.date) }}
