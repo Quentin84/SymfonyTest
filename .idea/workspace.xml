@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="30d81bf0-ba9a-449f-8e55-e882e00f8ee9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OC/PlatformBundle/Controller/AdvertController.php" afterPath="$PROJECT_DIR$/src/OC/PlatformBundle/Controller/AdvertController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OC/PlatformBundle/Entity/Advert.php" afterPath="$PROJECT_DIR$/src/OC/PlatformBundle/Entity/Advert.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OC/PlatformBundle/Repository/AdvertRepository.php" afterPath="$PROJECT_DIR$/src/OC/PlatformBundle/Repository/AdvertRepository.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig" afterPath="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/index.html.twig" afterPath="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/index.html.twig" />
     </list>
     <ignored path="Symfony.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdvertController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AdvertController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/OC/PlatformBundle/Controller/AdvertController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="181" column="37" selection-start-line="181" selection-start-column="37" selection-end-line="181" selection-end-column="37" />
+            <state relative-caret-position="295">
+              <caret line="169" column="28" selection-start-line="169" selection-start-column="28" selection-end-line="169" selection-end-column="28" />
               <folding>
                 <element signature="e#106#147#0#PHP" expanded="true" />
               </folding>
@@ -56,11 +52,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="form.html.twig" pinned="false" current-in-tab="false">
+      <file leaf-file-name="form.html.twig" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="60" selection-start-line="8" selection-start-column="60" selection-end-line="8" selection-end-column="60" />
+            <state relative-caret-position="374">
+              <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -92,9 +88,9 @@
         <option value="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/view.html.twig" />
         <option value="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/index.html.twig" />
         <option value="$PROJECT_DIR$/src/OC/PlatformBundle/Repository/AdvertRepository.php" />
-        <option value="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig" />
         <option value="$PROJECT_DIR$/src/OC/PlatformBundle/Entity/Advert.php" />
         <option value="$PROJECT_DIR$/src/OC/PlatformBundle/Controller/AdvertController.php" />
+        <option value="$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig" />
       </list>
     </option>
   </component>
@@ -514,12 +510,12 @@
       <workItem from="1460636693024" duration="2336000" />
       <workItem from="1460723531878" duration="596000" />
       <workItem from="1460734063458" duration="3967000" />
-      <workItem from="1460904017735" duration="23751000" />
+      <workItem from="1460904017735" duration="26252000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73699000" />
+    <option name="totallyTimeSpent" value="76200000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -971,14 +967,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="60" selection-start-line="8" selection-start-column="60" selection-end-line="8" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/OC/PlatformBundle/Entity/Advert.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4318">
@@ -991,11 +979,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/OC/PlatformBundle/Controller/AdvertController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="181" column="37" selection-start-line="181" selection-start-column="37" selection-end-line="181" selection-end-column="37" />
+        <state relative-caret-position="295">
+          <caret line="169" column="28" selection-start-line="169" selection-start-column="28" selection-end-line="169" selection-end-column="28" />
           <folding>
             <element signature="e#106#147#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OC/PlatformBundle/Resources/views/Advert/form.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="25" column="12" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
