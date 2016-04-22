@@ -7,11 +7,7 @@ namespace OC\PlatformBundle\Controller;
 use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Application;
 //forms
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use OC\PlatformBundle\Form\AdvertType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,15 +92,7 @@ class AdvertController extends Controller
 
       // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
       $advert = new Advert();
-      $formBuilder = $this->createFormBuilder($advert);
-      $formBuilder->add('date', dateType::class)
-          ->add('title', textType::class)
-          ->add('content', textareaType::class)
-          ->add('author', textType::class)
-          // Attention, l'entité doit retourner un boolean par le getPublished !
-          ->add('published', checkboxType::class, array('value' => 1, 'required' => false))
-          ->add('save', submitType::class);
-      $form = $formBuilder->getForm();
+      $form = $this->createForm(AdvertType::class, $advert);
 
       //associe la requete à l'objet advert
       $form->handleRequest($request);
@@ -154,15 +142,7 @@ class AdvertController extends Controller
   {
     $em = $this->getDoctrine()->getManager();
       $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
-      $formBuilder = $this->createFormBuilder($advert);
-      $formBuilder->add('date', dateType::class)
-          ->add('title', textType::class)
-          ->add('content', textareaType::class)
-          ->add('author', textType::class)
-          // Attention, l'entité doit retourner un boolean par le getPublished !
-          ->add('published', checkboxType::class, array('value' => 1, 'required' => false))
-          ->add('save', submitType::class);
-      $form = $formBuilder->getForm();
+      $form = $this->get('form.factory')->create(AdvertType::class, $advert);
 
       //associe la requete à l'objet advert
       $form->handleRequest($request);
