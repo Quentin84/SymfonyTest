@@ -103,17 +103,6 @@ class AdvertController extends Controller
           $em->flush();
 
       }
-      // Création de l'entité Image
-      $image = new Image();
-      $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
-      $image->setAlt('Job de rêve');
-
-      // On lie l'image à l'annonce
-      $advert->setImage($image);
-
-      // Ajout de candidatures
-
-
       if ($request->isMethod('POST')) {
 
           $listSkills = $em->getRepository("OCPlatformBundle:Skill")->findAll();

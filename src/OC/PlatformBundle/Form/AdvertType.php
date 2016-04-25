@@ -2,6 +2,7 @@
 
 namespace OC\PlatformBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
@@ -26,7 +27,12 @@ class AdvertType extends AbstractType
             ->add('content', TextareaType::class)
             // mettre return true dans l'entité pour le checkbox
             ->add('published', CheckboxType::class, array('value' => 1, 'required' => false))
-
+            ->add('image', ImageType::class)
+            // nom, 'collection' liste de qqc, tableau d'options
+            ->add('categories', CollectionType::class, array('entry_type' => CategoryType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'prototype' => true))
             ->add('save', SubmitType::class)
         ;
     }
