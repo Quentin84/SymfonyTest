@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdvertType extends AbstractType
@@ -35,6 +37,18 @@ class AdvertType extends AbstractType
                     'prototype' => true))
             ->add('save', SubmitType::class)
         ;
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event){
+            $advert = $event->getData();
+            if(null == $advert){
+                return;
+            }
+            if(!$advert->getPublished() || null === $advert->getId()){
+                $event->getForm()->add('published', CheckboxType::class, array('required' => false));
+            }else{
+                $event->getForm()->remove('published');
+            }
+
+        });
     }
     
     /**

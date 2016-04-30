@@ -76,4 +76,9 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
          return $qb->getQuery()
                     ->getResult();
     }
+    public function getPublished(){
+        return $this->createQueryBuilder('a')
+            ->where('a.published = :published')
+            ->setParameter(':published', true);
+    }
 }

@@ -8,6 +8,7 @@ use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Application;
 //forms
 use OC\PlatformBundle\Form\AdvertType;
+use OC\PlatformBundle\Form\AdvertEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,7 +99,7 @@ class AdvertController extends Controller
       $form->handleRequest($request);
       $em = $this->getDoctrine()->getManager();
       if($form->isValid()) {
-
+          //$advert->getImage()->upload(); // Upload de l'image sans utiliser les events doctrine
           $em->persist($advert);
           $em->flush();
 
@@ -131,7 +132,7 @@ class AdvertController extends Controller
   {
     $em = $this->getDoctrine()->getManager();
       $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
-      $form = $this->get('form.factory')->create(AdvertType::class, $advert);
+      $form = $this->get('form.factory')->create(AdvertEditType::class, $advert);
 
       //associe la requete à l'objet advert
       $form->handleRequest($request);
@@ -173,19 +174,20 @@ class AdvertController extends Controller
 
   public function deleteAction($id, Request $request)
   {
-    $em = $this->getDoctrine()->getManager();
+      $em = $this->getDoctrine()->getManager();
       $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
       if(null === $advert){
           throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
       }
 
-      foreach ($advert->getcategories() as $category ){
-          $advert->removeCategory($category);
-      }
-      $em->flush();
-      if($request->isMethod('POST')){
+      $form = $this->get('form.factory')->create();
+      if($request->isMethod('POST') && $form->handleRequest($request)->isValid()){
+          $em->remove($advert);
+          $em->flush();
           $request->getSession()->getFlashBag()->add('info', 'annonce correctement supprimée');
-          return $this->render('OCPlatformBundle:Advert:delete.html.twig', array('advert' => $advert));
+          return $this->redirectToRoute('oc_platform_home');
+      }else {
+          return $this->render('OCPlatformBundle:Advert:delete.html.twig', array('advert' => $advert, 'form' => $form->createView()));
       }
   }
 }
