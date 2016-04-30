@@ -1,3 +1,6 @@
+site_index:
+    path: /
+    defaults: { _controller : OCPlatformBundle:Advert:index, page : 1 }
 oc_platform:
     resource: "@OCPlatformBundle/Resources/config/routing.yml"
     prefix:   /platform

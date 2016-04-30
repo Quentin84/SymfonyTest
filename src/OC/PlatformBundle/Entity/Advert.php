@@ -5,8 +5,9 @@ namespace OC\PlatformBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollections;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Advert
@@ -30,6 +31,7 @@ class Advert
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetimetz")
+     * @Assert\Datetime
      */
     private $date;
 
@@ -37,6 +39,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\Length(min=10, minMessage="Le titre doit faire au moins {{ limit }} caractères")
      */
     private $title;
 
@@ -44,6 +47,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255)
+     * @Assert\Length(min=2)
      */
     private $author;
 
@@ -51,6 +55,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank()
      */
     private $content;
 
@@ -66,6 +71,7 @@ class Advert
 
     /**
      * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
 
     private $image;
@@ -385,5 +391,16 @@ class Advert
     public function getSlug()
     {
         return $this->slug;
+    }
+    /**
+     * @Assert\Callback
+     */
+    public function isContentValid(ExecutionContextInterface $context){
+        $forbiddenWords = array('con', 'connard', 'enculé');
+        if(preg_match('#'.implode('|', $forbiddenWords).'#', $this->getContent())){
+            $context ->buildViolation('Contenu invalide pour cause d insultes')
+                ->atPath('content')
+                ->addViolation();
+        }
     }
 }

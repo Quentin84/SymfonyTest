@@ -4,8 +4,6 @@
 
 namespace OC\PlatformBundle\Controller;
 
-use OC\PlatformBundle\Entity\AdvertSkill;
-use OC\PlatformBundle\Entity\Application;
 //forms
 use OC\PlatformBundle\Form\AdvertType;
 use OC\PlatformBundle\Form\AdvertEditType;
@@ -14,12 +12,28 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use OC\PlatformBundle\Entity\Advert;
-use OC\PlatformBundle\Entity\Image;
-
 
 class AdvertController extends Controller
 {
-  public function indexAction($page)
+    public function testAction(){
+        $advert = new Advert();
+        $advert->setDate(new \DateTime());
+        $advert->setTitle('abc');
+        $advert->setAuthor('a');
+
+        $validator = $this->get('validator');
+        $listErrors = $validator->validate($advert);
+
+        if(count($listErrors) > 0){
+            return new Response((string) $listErrors);
+
+        }else{
+            return new Response('The annonce is valid');
+
+        }
+
+    }
+    public function indexAction($page)
   {
       $nbPerPage = 3;
       $repo = $this->getDoctrine()->getManager()->getRepository('OCPlatformBundle:Advert');
@@ -95,16 +109,16 @@ class AdvertController extends Controller
       $advert = new Advert();
       $form = $this->createForm(AdvertType::class, $advert);
 
-      //associe la requete à l'objet advert
-      $form->handleRequest($request);
       $em = $this->getDoctrine()->getManager();
-      if($form->isValid()) {
+      if($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
           //$advert->getImage()->upload(); // Upload de l'image sans utiliser les events doctrine
           $em->persist($advert);
           $em->flush();
+          $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+          return $this->redirect($this->generateUrl('oc_platform_view', array('id' => $advert->getId())));
 
       }
-      if ($request->isMethod('POST')) {
+      /*if () {
 
           $listSkills = $em->getRepository("OCPlatformBundle:Skill")->findAll();
           foreach($listSkills as $skill){
@@ -118,11 +132,10 @@ class AdvertController extends Controller
           // Flush des données
           // Ici, on s'occupera de la création et de la gestion du formulaire
 
-      $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
-      // Puis on redirige vers la page de visualisation de cettte annonce
-      return $this->redirect($this->generateUrl('oc_platform_view', array('id' => $advert->getId())));
-    }
+          // Puis on redirige vers la page de visualisation de cettte annonce
+
+    }*/
 
     // Si on n'est pas en POST, alors on affiche le formulaire
     return $this->render('OCPlatformBundle:Advert:add.html.twig', array('form' => $form->createView()));
