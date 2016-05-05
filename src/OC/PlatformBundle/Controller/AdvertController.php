@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use OC\PlatformBundle\Entity\Advert;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class AdvertController extends Controller
 {
@@ -49,7 +51,7 @@ class AdvertController extends Controller
 
       // Ici, on récupére la liste des annonces, puis on la passera au template
       //var_dump($listAdverts);
-    return $this->render('OCPlatformBundle:Advert:index.html.twig', ['listAdverts'=> $listAdverts, 'page' => $page, 'nbPages' => $nbPages]);
+    return $this->render('OCPlatformBundle:Advert:index.html.twig', ['listAdverts'=> $listAdverts, 'page' => $page, 'nbPages' => $nbPages, 'utilisateur' => $this->getUser()]);
   }
   public function menuAction($limit = 3) {
 
@@ -100,9 +102,14 @@ class AdvertController extends Controller
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Security("has_role('ROLE_AUTEUR')")
      */
     public function addAction(Request $request)
   {
+      //check if user is granted
+      /*if(!$this->get('security.authorization_checker')->isGranted('ROLE_AUTEUR')){
+          throw new AccessDeniedException('Accès réservé aux auteurs');
+      }*/
     // La gestion d'un formulaire est particulière, mais l'idée est la suivante :
 
       // Si la requête est en POST, c'est que le visiteur a soumis le formulaire
