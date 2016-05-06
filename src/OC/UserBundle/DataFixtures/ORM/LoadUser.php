@@ -22,8 +22,7 @@ class LoadUser implements FixtureInterface
             $user->setUsername($name);
             $user->setPassword($name);
 
-            // On ne se sert pas du sel pour l'instant
-            $user->setSalt('');
+            $user->setEmail($name);
             // On définit uniquement le role ROLE_USER qui est le role de base
             $user->setRoles(array('ROLE_USER'));
 
