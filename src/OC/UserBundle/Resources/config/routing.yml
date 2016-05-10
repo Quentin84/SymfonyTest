@@ -1,0 +1,20 @@
+
+_new:
+    path:     /New
+    defaults: { _controller: OCUserBundle:User:New }
+
+show:
+    path:     /show
+    defaults: { _controller: OCUserBundle:User:show }
+
+list:
+    path:     /list
+    defaults: { _controller: OCUserBundle:User:list }
+
+update:
+    path:     /update
+    defaults: { _controller: OCUserBundle:User:update }
+
+delete:
+    path:     /delete
+    defaults: { _controller: OCUserBundle:User:delete }

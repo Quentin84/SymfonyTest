@@ -5,6 +5,10 @@ oc_platform:
     resource: "@OCPlatformBundle/Resources/config/routing.yml"
     prefix:   /platform
 
+oc_user_list:
+    resource: "@OCUserBundle/Resources/config/routing.yml"
+    prefix: /users
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

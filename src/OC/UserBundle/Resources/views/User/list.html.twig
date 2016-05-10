@@ -1,0 +1,10 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}OCUserBundle:User:list{% endblock %}
+
+{% block body %}
+<h1>Welcome to the User:list page</h1>
+    {% for utilisateur in utilisateurs %}
+        <p>{{ utilisateur.username }}</p>
+    {% endfor %}
+{% endblock %}

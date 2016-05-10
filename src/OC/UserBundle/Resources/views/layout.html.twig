@@ -1,0 +1,21 @@
+{# src/OC/UserBundle/Resources/views/layout.html.twig #}
+
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block ocplatform_body %}
+
+{# S'il y a une erreur, on l'affiche dans un joli cadre #}
+        {% for key, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                        <div class="alert alert-{{ key }}">
+                                {{ message|trans({}, 'FOSUserBundle') }}
+                        </div>
+                {% endfor %}
+        {% endfor %}
+
+{# Le formulaire, avec URL de soumission vers la route « login_check » comme on l'a vu #}
+        {% block fos_user_content %}
+        {% endblock fos_user_content %}
+
+
+{% endblock %}
