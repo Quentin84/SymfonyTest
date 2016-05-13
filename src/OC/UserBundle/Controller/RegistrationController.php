@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use OC\UserBundle\Entity\User;
 
-class UserController extends BaseController
+class RegistrationController extends BaseController
 {
     public function registerAction(request $request){
         parent::registerAction($request);
