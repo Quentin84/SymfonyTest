@@ -8,7 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -26,7 +25,7 @@ class AdvertType extends AbstractType
             ->add('date', DateType::class)
             ->add('title', TextType::class)
             ->add('author', TextType::class)
-            ->add('content', TextareaType::class)
+            ->add('content', CKEditorType::class)
             // mettre return true dans l'entité pour le checkbox
             ->add('published', CheckboxType::class, array('value' => 1, 'required' => false))
             ->add('image', ImageType::class)

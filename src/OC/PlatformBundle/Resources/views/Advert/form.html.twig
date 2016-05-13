@@ -24,7 +24,7 @@
     {{ form_label(form.content, "Texte de l'annonce", {'label_attr' : {'class' : 'col-sm-3 control-label'}}) }}
     {{ form_errors(form.content) }}
     <div class="col-sm-4">
-      {{ form_widget(form.content, {'attr' : {'class': 'form-control'}}) }}
+      {{ form_widget(form.content) }}
     </div>
   </div>
   <div class="form-group">
@@ -48,7 +48,10 @@
   {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
   {{ form_end(form) }}
 </div>
-<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+{% block javascript %} }
+  <script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+{% endblock javascript %}
 <script type="application/javascript">
   $(document).ready(function() {
     // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
@@ -111,6 +114,8 @@
         return false;
       });
     }
+    // Enabling CKEditor
+
   });
 
 
