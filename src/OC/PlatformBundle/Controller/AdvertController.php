@@ -119,6 +119,7 @@ class AdvertController extends Controller
       $em = $this->getDoctrine()->getManager();
       if($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
           //$advert->getImage()->upload(); // Upload de l'image sans utiliser les events doctrine
+          $advert->setAuthor($this->getUser());
           $em->persist($advert);
           $em->flush();
           $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');

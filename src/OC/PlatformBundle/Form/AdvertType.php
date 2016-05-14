@@ -24,7 +24,7 @@ class AdvertType extends AbstractType
         $builder
             ->add('date', DateType::class)
             ->add('title', TextType::class)
-            ->add('author', TextType::class)
+            //->add('author', TextType::class)
             ->add('content', CKEditorType::class)
             // mettre return true dans l'entité pour le checkbox
             ->add('published', CheckboxType::class, array('value' => 1, 'required' => false))

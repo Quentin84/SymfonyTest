@@ -46,8 +46,9 @@ class Advert
     /**
      * @var string
      *
-     * @ORM\Column(name="author", type="string", length=255)
-     * @Assert\Length(min=2)
+     * @ORM\ManyToOne(targetEntity="OC\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="author", referencedColumnName="id", nullable=false)
+     *
      */
     private $author;
 
